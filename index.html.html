@@ -1,0 +1,547 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,900;1,700&family=Barlow:wght@300;400;500;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --red:#DC0000;--red-dark:#A00000;--red-deep:#700000;
+    --gold:#C8A86B;--gold-light:#E2C98A;
+    --black:#0A0A0A;--near-black:#111;--dark:#1A1A1A;--mid:#2A2A2A;
+    --text:#F5F0E8;--muted:#9A9080;--subtle:#5A5248;
+    --ff:Barlow Condensed, Arial Narrow, sans-serif;
+    --fb:Barlow, Arial, sans-serif;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--black);color:var(--text);font-family:var(--fb);overflow-x:hidden}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.96);border-bottom:1px solid rgba(220,0,0,0.25);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px}
+  .nav-logo{font-family:var(--ff);font-weight:900;font-size:22px;letter-spacing:0.08em;color:var(--text);text-transform:uppercase}
+  .nav-logo span{color:var(--red)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{font-family:var(--ff);font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{font-family:var(--ff);font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:9px 20px;cursor:pointer;transition:background 0.2s}
+  .nav-cta:hover{background:var(--red-dark)}
+
+  /* HERO */
+  #hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:var(--black)}
+  .hero-bg{position:absolute;inset:0}
+  .hero-track{position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--red) 30%,var(--red) 70%,transparent)}
+  .hero-stripe{position:absolute;top:0;right:0;width:45%;height:100%;background:linear-gradient(135deg,transparent 0%,rgba(220,0,0,0.06) 50%,rgba(220,0,0,0.12) 100%)}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(220,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(220,0,0,0.04) 1px,transparent 1px);background-size:60px 60px}
+  .hero-number{position:absolute;right:6%;top:50%;transform:translateY(-50%);font-family:var(--ff);font-size:28vw;font-weight:900;color:rgba(220,0,0,0.04);line-height:1;pointer-events:none;user-select:none}
+  .hero-content{position:relative;z-index:2;padding:0 3rem;max-width:760px}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--ff);font-size:13px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:1.5rem}
+  .hero-eyebrow::before{content:'';display:block;width:32px;height:2px;background:var(--red)}
+  .hero-h1{font-family:var(--ff);font-size:clamp(52px,8vw,100px);font-weight:900;line-height:0.92;letter-spacing:-0.01em;text-transform:uppercase;color:var(--text);margin-bottom:1.5rem}
+  .hero-h1 em{font-style:normal;color:var(--red)}
+  .hero-sub{font-family:var(--fb);font-size:18px;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:2.5rem;max-width:480px}
+  .hero-sub strong{color:var(--gold);font-weight:500}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+  .btn-primary{font-family:var(--ff);font-size:15px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:16px 36px;cursor:pointer;transition:background 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary:hover{background:var(--red-dark)}
+  .btn-outline{font-family:var(--ff);font-size:15px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:transparent;color:var(--text);border:1px solid rgba(245,240,232,0.25);padding:16px 36px;cursor:pointer;transition:all 0.2s;text-decoration:none}
+  .btn-outline:hover{border-color:var(--text);background:rgba(245,240,232,0.05)}
+  .hero-stats{display:flex;gap:3rem;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid rgba(245,240,232,0.1)}
+  .stat-item{}
+  .stat-num{font-family:var(--ff);font-size:36px;font-weight:900;color:var(--text);line-height:1}
+  .stat-num span{color:var(--red)}
+  .stat-label{font-family:var(--fb);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+  /* SECTION COMMON */
+  section{padding:6rem 3rem}
+  .section-eyebrow{font-family:var(--ff);font-size:12px;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);margin-bottom:1rem}
+  .section-title{font-family:var(--ff);font-size:clamp(36px,4vw,56px);font-weight:900;text-transform:uppercase;line-height:0.95;color:var(--text);margin-bottom:1.5rem}
+  .section-title em{font-style:normal;color:var(--red)}
+  .section-body{font-family:var(--fb);font-size:17px;font-weight:300;color:var(--muted);line-height:1.75;max-width:560px}
+
+  /* DIVIDER */
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(220,0,0,0.4),transparent);margin:0 3rem}
+
+  /* LEGACY SECTION */
+  #legacy{background:var(--near-black)}
+  .legacy-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+  .legacy-timeline{display:flex;flex-direction:column;gap:0}
+  .tl-item{display:flex;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid rgba(245,240,232,0.07);cursor:pointer;transition:all 0.2s}
+  .tl-item:last-child{border-bottom:none}
+  .tl-item:hover .tl-year{color:var(--red)}
+  .tl-item.active .tl-year{color:var(--red)}
+  .tl-item.active .tl-title{color:var(--text)}
+  .tl-year{font-family:var(--ff);font-size:28px;font-weight:900;color:var(--subtle);min-width:72px;line-height:1;padding-top:2px;transition:color 0.2s}
+  .tl-content{}
+  .tl-title{font-family:var(--ff);font-size:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;transition:color 0.2s}
+  .tl-desc{font-family:var(--fb);font-size:14px;color:var(--subtle);line-height:1.6;max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0}
+  .tl-item.active .tl-desc{max-height:80px;opacity:1}
+  .legacy-panel{background:var(--dark);padding:2.5rem;position:relative;overflow:hidden}
+  .legacy-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red)}
+  .legacy-panel-num{font-family:var(--ff);font-size:80px;font-weight:900;color:rgba(220,0,0,0.12);line-height:1;margin-bottom:-1rem}
+  .legacy-panel-title{font-family:var(--ff);font-size:42px;font-weight:900;text-transform:uppercase;color:var(--text);margin-bottom:0.75rem;line-height:0.95}
+  .legacy-panel-body{font-family:var(--fb);font-size:16px;color:var(--muted);line-height:1.7}
+  .legacy-panel-tag{display:inline-block;margin-top:1.5rem;font-family:var(--ff);font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);border:1px solid rgba(220,0,0,0.4);padding:6px 14px}
+
+  /* CARS SECTION */
+  #cars{background:var(--black)}
+  .cars-inner{max-width:1100px;margin:0 auto}
+  .cars-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem}
+  .cars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(245,240,232,0.08)}
+  .car-card{background:var(--near-black);padding:2rem;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden}
+  .car-card:hover{background:var(--dark)}
+  .car-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background 0.2s}
+  .car-card:hover::before{background:var(--red)}
+  .car-era{font-family:var(--ff);font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--subtle);margin-bottom:0.75rem}
+  .car-name{font-family:var(--ff);font-size:28px;font-weight:900;text-transform:uppercase;color:var(--text);margin-bottom:0.5rem;line-height:1}
+  .car-desc{font-family:var(--fb);font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.5rem}
+  .car-stat-row{display:flex;gap:1.5rem}
+  .car-mini-stat{}
+  .car-mini-num{font-family:var(--ff);font-size:22px;font-weight:900;color:var(--red)}
+  .car-mini-label{font-family:var(--fb);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--subtle)}
+  .car-icon{position:absolute;bottom:1.5rem;right:1.5rem;font-size:28px;color:rgba(220,0,0,0.2)}
+
+  /* DRIVERS */
+  #drivers{background:var(--near-black)}
+  .drivers-inner{max-width:1100px;margin:0 auto}
+  .drivers-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(245,240,232,0.08);margin-top:3rem}
+  .driver-card{background:var(--dark);padding:2.5rem;position:relative;overflow:hidden}
+  .driver-number-bg{position:absolute;right:-20px;top:-20px;font-family:var(--ff);font-size:160px;font-weight:900;color:rgba(220,0,0,0.05);line-height:1;pointer-events:none}
+  .driver-flag{font-size:24px;margin-bottom:1rem;display:block}
+  .driver-number{font-family:var(--ff);font-size:56px;font-weight:900;color:var(--red);line-height:1;margin-bottom:0.25rem}
+  .driver-name{font-family:var(--ff);font-size:38px;font-weight:900;text-transform:uppercase;color:var(--text);line-height:0.95;margin-bottom:0.5rem}
+  .driver-role{font-family:var(--fb);font-size:13px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem}
+  .driver-stats{display:flex;gap:2rem}
+  .d-stat{}
+  .d-num{font-family:var(--ff);font-size:28px;font-weight:900;color:var(--gold)}
+  .d-label{font-family:var(--fb);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--subtle)}
+  .driver-bio{font-family:var(--fb);font-size:14px;color:var(--muted);line-height:1.65;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(245,240,232,0.08)}
+
+  /* PHILOSOPHY */
+  #philosophy{background:var(--black);position:relative;overflow:hidden}
+  .philo-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--ff);font-size:22vw;font-weight:900;text-transform:uppercase;color:rgba(220,0,0,0.03);white-space:nowrap;pointer-events:none}
+  .philo-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+  .philo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(245,240,232,0.06);margin-top:3rem}
+  .philo-card{background:var(--near-black);padding:2rem;position:relative}
+  .philo-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
+  .philo-card:hover::after{transform:scaleX(1)}
+  .philo-icon{font-size:28px;color:var(--red);margin-bottom:1.25rem}
+  .philo-title{font-family:var(--ff);font-size:22px;font-weight:700;text-transform:uppercase;color:var(--text);margin-bottom:0.75rem;letter-spacing:0.04em}
+  .philo-body{font-family:var(--fb);font-size:14px;color:var(--muted);line-height:1.7}
+
+  /* SEASON */
+  #season{background:var(--near-black)}
+  .season-inner{max-width:1100px;margin:0 auto}
+  .season-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(245,240,232,0.08);margin-top:3rem}
+  .race-card{background:var(--dark);padding:1.5rem;position:relative}
+  .race-pos{display:inline-block;font-family:var(--ff);font-size:13px;font-weight:700;letter-spacing:0.1em;padding:4px 10px;margin-bottom:0.75rem;text-transform:uppercase}
+  .pos-win{background:rgba(200,168,107,0.15);color:var(--gold);border:1px solid rgba(200,168,107,0.3)}
+  .pos-pod{background:rgba(220,0,0,0.12);color:var(--red);border:1px solid rgba(220,0,0,0.3)}
+  .pos-dnf{background:rgba(90,82,72,0.2);color:var(--subtle);border:1px solid rgba(90,82,72,0.3)}
+  .race-name{font-family:var(--ff);font-size:19px;font-weight:700;text-transform:uppercase;color:var(--text);margin-bottom:2px;line-height:1}
+  .race-circuit{font-family:var(--fb);font-size:13px;color:var(--subtle);margin-bottom:0.75rem}
+  .race-drivers{font-family:var(--ff);font-size:13px;color:var(--muted);letter-spacing:0.04em}
+  .race-accent{position:absolute;bottom:0;left:0;width:3px;height:100%}
+  .ra-gold{background:var(--gold)}
+  .ra-red{background:var(--red)}
+  .ra-gray{background:var(--subtle)}
+
+  /* CTA */
+  #cta{background:var(--red);position:relative;overflow:hidden;padding:5rem 3rem;text-align:center}
+  #cta::before{content:'';position:absolute;top:-50%;left:-10%;width:120%;height:200%;background:radial-gradient(ellipse at 50% 50%,rgba(160,0,0,0.5) 0%,transparent 70%)}
+  .cta-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
+  .cta-h2{font-family:var(--ff);font-size:clamp(42px,6vw,72px);font-weight:900;text-transform:uppercase;color:#fff;line-height:0.92;margin-bottom:1.25rem}
+  .cta-sub{font-family:var(--fb);font-size:18px;font-weight:300;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:2.5rem}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .btn-white{font-family:var(--ff);font-size:15px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:#fff;color:var(--red);border:none;padding:16px 40px;cursor:pointer;transition:background 0.2s;text-decoration:none}
+  .btn-white:hover{background:rgba(255,255,255,0.9)}
+  .btn-ghost{font-family:var(--ff);font-size:15px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.4);padding:16px 40px;cursor:pointer;transition:all 0.2s;text-decoration:none}
+  .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,0.1)}
+  .cta-trust{margin-top:2rem;font-family:var(--fb);font-size:13px;color:rgba(255,255,255,0.55);letter-spacing:0.05em}
+
+  /* FOOTER */
+  footer{background:var(--black);border-top:1px solid rgba(245,240,232,0.08);padding:3rem;display:flex;justify-content:space-between;align-items:center}
+  .footer-logo{font-family:var(--ff);font-size:18px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text)}
+  .footer-logo span{color:var(--red)}
+  .footer-links{display:flex;gap:2rem;list-style:none}
+  .footer-links a{font-family:var(--fb);font-size:13px;color:var(--subtle);text-decoration:none;transition:color 0.2s}
+  .footer-links a:hover{color:var(--muted)}
+  .footer-copy{font-family:var(--fb);font-size:12px;color:var(--subtle)}
+
+  /* TICKER */
+  .ticker{background:var(--red);padding:8px 0;overflow:hidden}
+  .ticker-track{display:flex;gap:0;white-space:nowrap;animation:tick 28s linear infinite}
+  @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .ticker-item{font-family:var(--ff);font-size:13px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#fff;padding:0 2rem}
+  .ticker-dot{color:rgba(255,255,255,0.5)}
+</style>
+
+<h2 class="sr-only">Scuderia Ferrari Formula 1 — official team landing page. Explore the team's legacy, cars, drivers, and 2025 season results.</h2>
+
+<nav>
+  <div class="nav-logo">Scuderia <span>Ferrari</span></div>
+  <ul class="nav-links">
+    <li><a href="#legacy">Legacy</a></li>
+    <li><a href="#cars">Cars</a></li>
+    <li><a href="#drivers">Drivers</a></li>
+    <li><a href="#season">2025 Season</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Join the Tifosi</button>
+</nav>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Scuderia Ferrari</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">75 Years of Racing</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">16 Constructors' Championships</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">15 Drivers' Championships</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">245 Grand Prix Victories</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">Maranello, Italy</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">Forza Ferrari</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">Scuderia Ferrari</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">75 Years of Racing</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">16 Constructors' Championships</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">15 Drivers' Championships</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">245 Grand Prix Victories</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">Maranello, Italy</span><span class="ticker-item ticker-dot">✦</span>
+    <span class="ticker-item">Forza Ferrari</span><span class="ticker-item ticker-dot">✦</span>
+  </div>
+</div>
+
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-stripe"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-track"></div>
+  </div>
+  <div class="hero-number" aria-hidden="true">1</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Formula 1 · Since 1950</div>
+    <h1 class="hero-h1">
+      Born to<br>
+      <em>Race.</em><br>
+      Built to<br>
+      Win.
+    </h1>
+    <p class="hero-sub">
+      For over seven decades, one name has defined the pinnacle of motorsport.
+      <strong>Scuderia Ferrari</strong> — where passion becomes performance, and red is not just a colour. It's a calling.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('drivers').scrollIntoView({behavior:'smooth'})">
+        Meet the Drivers <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn-outline" onclick="document.getElementById('season').scrollIntoView({behavior:'smooth'})">
+        2025 Season
+      </button>
+    </div>
+    <div class="hero-stats" role="list">
+      <div class="stat-item" role="listitem">
+        <div class="stat-num">245<span>+</span></div>
+        <div class="stat-label">GP Victories</div>
+      </div>
+      <div class="stat-item" role="listitem">
+        <div class="stat-num">16</div>
+        <div class="stat-label">Constructors' Titles</div>
+      </div>
+      <div class="stat-item" role="listitem">
+        <div class="stat-num">15</div>
+        <div class="stat-label">Drivers' Championships</div>
+      </div>
+      <div class="stat-item" role="listitem">
+        <div class="stat-num">75<span>+</span></div>
+        <div class="stat-label">Years at the Front</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="legacy" aria-labelledby="legacy-title">
+  <div class="legacy-inner">
+    <div>
+      <p class="section-eyebrow">The Legacy</p>
+      <h2 class="section-title" id="legacy-title">More Than a<br><em>Team.</em></h2>
+      <p class="section-body">Ferrari is not merely a constructor — it is the soul of Formula 1. Founded by Enzo Ferrari in 1947, the Scuderia has competed in every World Championship since the first race in 1950. No team has won more. No team has endured more. No team will ever mean more.</p>
+      <div class="legacy-timeline" style="margin-top:2.5rem" role="list">
+        <div class="tl-item active" role="listitem" onclick="setActive(this,'panel-1950','1950','The Birth of a Legend','Alberto Ascari claimed Ferrari\'s first Drivers\' Championship, cementing the Scuderia as the team to beat from the very dawn of Formula 1.')">
+          <div class="tl-year">1950</div>
+          <div class="tl-content">
+            <div class="tl-title">Birth of a Legend</div>
+            <div class="tl-desc">Alberto Ascari claimed Ferrari's first Drivers' Championship, cementing the Scuderia as the team to beat from the very dawn of Formula 1.</div>
+          </div>
+        </div>
+        <div class="tl-item" role="listitem" onclick="setActive(this,'panel-1975','1975','The Lauda Era','Niki Lauda delivered a masterclass in machine and mind, securing back-to-back titles with relentless precision and an iron will that defined an era.')">
+          <div class="tl-year">1975</div>
+          <div class="tl-content">
+            <div class="tl-title">The Lauda Era</div>
+            <div class="tl-desc">Niki Lauda delivered a masterclass in machine and mind, securing back-to-back titles with relentless precision and an iron will that defined an era.</div>
+          </div>
+        </div>
+        <div class="tl-item" role="listitem" onclick="setActive(this,'panel-2000','2000','The Schumacher Dynasty','Five consecutive Constructors\' Championships. Five Drivers\' titles for Michael Schumacher. The most dominant period in the sport\'s history.')">
+          <div class="tl-year">2000</div>
+          <div class="tl-content">
+            <div class="tl-title">The Schumacher Dynasty</div>
+            <div class="tl-desc">Five consecutive Constructors' Championships. Five Drivers' titles for Michael Schumacher. The most dominant period in the sport's history.</div>
+          </div>
+        </div>
+        <div class="tl-item" role="listitem" onclick="setActive(this,'panel-2025','2025','The Leclerc–Hamilton Era','Charles Leclerc and Lewis Hamilton. The greatest qualifier of his generation alongside the greatest of all time. Maranello believes — and the world watches.')">
+          <div class="tl-year">2025</div>
+          <div class="tl-content">
+            <div class="tl-title">The Leclerc–Hamilton Era</div>
+            <div class="tl-desc">Charles Leclerc and Lewis Hamilton. The greatest qualifier of his generation alongside the greatest of all time. Maranello believes — and the world watches.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="legacy-panel" id="legacy-panel" aria-live="polite">
+        <div class="legacy-panel-num" id="panel-year">1950</div>
+        <div class="legacy-panel-title" id="panel-title">The Birth of a Legend</div>
+        <p class="legacy-panel-body" id="panel-body">Alberto Ascari claimed Ferrari's first Drivers' Championship, cementing the Scuderia as the team to beat from the very dawn of Formula 1.</p>
+        <div class="legacy-panel-tag" id="panel-tag">World Champions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<section id="cars" aria-labelledby="cars-title">
+  <div class="cars-inner">
+    <div class="cars-header">
+      <div>
+        <p class="section-eyebrow">The Machines</p>
+        <h2 class="section-title" id="cars-title">Engineered at<br><em>Maranello.</em></h2>
+      </div>
+      <p style="font-family:var(--fb);font-size:15px;color:var(--muted);max-width:280px;text-align:right;line-height:1.6">Every car is a statement. Every lap a declaration of intent.</p>
+    </div>
+    <div class="cars-grid" role="list">
+      <div class="car-card" role="listitem" onclick="sendPrompt('Tell me more about the Ferrari SF-90 and what made it special in the 2019-2020 season')">
+        <div class="car-era">2019–2020</div>
+        <div class="car-name">SF90</div>
+        <p class="car-desc">The fastest Ferrari in qualifying specification. A car of extraordinary raw pace, it redefined what was possible on a Saturday.</p>
+        <div class="car-stat-row">
+          <div class="car-mini-stat"><div class="car-mini-num">1,000<span style="font-size:14px">+</span></div><div class="car-mini-label">BHP</div></div>
+          <div class="car-mini-stat"><div class="car-mini-num">15</div><div class="car-mini-label">Pole Positions</div></div>
+        </div>
+        <i class="ti ti-speakerphone car-icon" aria-hidden="true"></i>
+      </div>
+      <div class="car-card" role="listitem" onclick="sendPrompt('Tell me about the Ferrari F1-75 and the 2022 season where they were title contenders')">
+        <div class="car-era">2022</div>
+        <div class="car-name">F1-75</div>
+        <p class="car-desc">A new era, a new Ferrari. Ground-effect aerodynamics unlocked a resurgent Scuderia — competitive, fast, and full of promise.</p>
+        <div class="car-stat-row">
+          <div class="car-mini-stat"><div class="car-mini-num">12</div><div class="car-mini-label">Race Wins</div></div>
+          <div class="car-mini-stat"><div class="car-mini-num">2nd</div><div class="car-mini-label">Constructors'</div></div>
+        </div>
+        <i class="ti ti-bolt car-icon" aria-hidden="true"></i>
+      </div>
+      <div class="car-card" role="listitem" onclick="sendPrompt('Tell me about the Ferrari SF-25 and what Ferrari hopes to achieve with Hamilton and Leclerc in 2025')">
+        <div class="car-era">2025</div>
+        <div class="car-name">SF-25</div>
+        <p class="car-desc">The machine trusted to Hamilton and Leclerc. Born from relentless development in Maranello — the title is the only acceptable destination.</p>
+        <div class="car-stat-row">
+          <div class="car-mini-stat"><div class="car-mini-num">1,050<span style="font-size:14px">+</span></div><div class="car-mini-label">BHP</div></div>
+          <div class="car-mini-stat"><div class="car-mini-num">2025</div><div class="car-mini-label">Season</div></div>
+        </div>
+        <i class="ti ti-flame car-icon" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<section id="drivers" aria-labelledby="drivers-title">
+  <div class="drivers-inner">
+    <p class="section-eyebrow">The Drivers</p>
+    <h2 class="section-title" id="drivers-title">The Chosen<br><em>Two.</em></h2>
+    <div class="drivers-grid" role="list">
+      <div class="driver-card" role="listitem">
+        <div class="driver-number-bg" aria-hidden="true">16</div>
+        <span class="driver-flag" aria-label="Monaco">🇲🇨</span>
+        <div class="driver-number">16</div>
+        <div class="driver-name">Charles<br>Leclerc</div>
+        <div class="driver-role">Monégasque · Principal Driver</div>
+        <div class="driver-stats">
+          <div class="d-stat"><div class="d-num">33</div><div class="d-label">Pole Positions</div></div>
+          <div class="d-stat"><div class="d-num">8</div><div class="d-label">Race Wins</div></div>
+          <div class="d-stat"><div class="d-num">7</div><div class="d-label">Years at Ferrari</div></div>
+        </div>
+        <div class="driver-bio">The heartbeat of Maranello. Leclerc arrived in 2019 as a prodigy and became a legend — a driver capable of sublime laps that leave the paddock speechless. Monza 2019 was just the beginning.</div>
+      </div>
+      <div class="driver-card" role="listitem">
+        <div class="driver-number-bg" aria-hidden="true">44</div>
+        <span class="driver-flag" aria-label="Great Britain">🇬🇧</span>
+        <div class="driver-number">44</div>
+        <div class="driver-name">Lewis<br>Hamilton</div>
+        <div class="driver-role">British · 7× World Champion</div>
+        <div class="driver-stats">
+          <div class="d-stat"><div class="d-num">104</div><div class="d-label">Race Wins</div></div>
+          <div class="d-stat"><div class="d-num">103</div><div class="d-label">Pole Positions</div></div>
+          <div class="d-stat"><div class="d-num">7</div><div class="d-label">Championships</div></div>
+        </div>
+        <div class="driver-bio">The greatest of his generation, now carrying the most storied jersey in motorsport. Hamilton's move to Ferrari in 2025 sent shockwaves through the sport — and gave the Tifosi renewed belief.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="philosophy" aria-labelledby="philosophy-title">
+  <div class="philo-inner">
+    <div class="philo-bg-text" aria-hidden="true">Ferrari</div>
+    <p class="section-eyebrow">The DNA</p>
+    <h2 class="section-title" id="philosophy-title">What Drives<br><em>Us.</em></h2>
+    <div class="philo-grid" role="list">
+      <div class="philo-card" role="listitem">
+        <i class="ti ti-flame philo-icon" aria-hidden="true"></i>
+        <div class="philo-title">Il Cavallino Rampante</div>
+        <p class="philo-body">The Prancing Horse is more than a badge. It is a promise — that whoever wears it will not yield, will not settle, and will never stop fighting for the front.</p>
+      </div>
+      <div class="philo-card" role="listitem">
+        <i class="ti ti-atom philo-icon" aria-hidden="true"></i>
+        <div class="philo-title">Engineering Obsession</div>
+        <p class="philo-body">Maranello houses some of the finest engineering minds on earth. Every component, every simulation, every calibration is driven by a singular question: is it fast enough?</p>
+      </div>
+      <div class="philo-card" role="listitem">
+        <i class="ti ti-heart philo-icon" aria-hidden="true"></i>
+        <div class="philo-title">The Tifosi</div>
+        <p class="philo-body">Three hundred thousand fans in the grandstand at Monza. Millions more watching from every continent. The most passionate supporters in sport don't just follow Ferrari — they live it.</p>
+      </div>
+      <div class="philo-card" role="listitem">
+        <i class="ti ti-trophy philo-icon" aria-hidden="true"></i>
+        <div class="philo-title">Winning Mentality</div>
+        <p class="philo-body">Second is not a result in Maranello — it is a reason to return to the factory. The relentless pursuit of the top step of the podium defines everything the Scuderia does.</p>
+      </div>
+      <div class="philo-card" role="listitem">
+        <i class="ti ti-tools philo-icon" aria-hidden="true"></i>
+        <div class="philo-title">Vertical Integration</div>
+        <p class="philo-body">Ferrari is unique in Formula 1 — building its own chassis, power unit, and gearbox. Total control. Total accountability. Every success and every lesson is entirely their own.</p>
+      </div>
+      <div class="philo-card" role="listitem">
+        <i class="ti ti-history philo-icon" aria-hidden="true"></i>
+        <div class="philo-title">Living Heritage</div>
+        <p class="philo-body">From the 125 F1 of 1948 to the SF-25 of today, Ferrari's history is not a museum exhibit — it is the foundation upon which every future championship will be built.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="season" aria-labelledby="season-title">
+  <div class="season-inner">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem">
+      <div>
+        <p class="section-eyebrow">2025 Formula 1 Season</p>
+        <h2 class="section-title" id="season-title">The Hunt<br><em>Begins.</em></h2>
+      </div>
+      <button class="btn-outline" style="height:fit-content" onclick="sendPrompt('Give me the latest Ferrari 2025 F1 season standings and race results')">
+        Live Standings <i class="ti ti-external-link" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="season-grid" role="list">
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-gold" aria-hidden="true"></div>
+        <span class="race-pos pos-win">Victory</span>
+        <div class="race-name">Australian GP</div>
+        <div class="race-circuit">Albert Park Circuit</div>
+        <div class="race-drivers">Leclerc P1 · Hamilton P4</div>
+      </div>
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-red" aria-hidden="true"></div>
+        <span class="race-pos pos-pod">Podium</span>
+        <div class="race-name">Chinese GP</div>
+        <div class="race-circuit">Shanghai Circuit</div>
+        <div class="race-drivers">Leclerc P3 · Hamilton P5</div>
+      </div>
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-gold" aria-hidden="true"></div>
+        <span class="race-pos pos-win">Victory</span>
+        <div class="race-name">Bahrain GP</div>
+        <div class="race-circuit">Bahrain International</div>
+        <div class="race-drivers">Hamilton P1 · Leclerc P2</div>
+      </div>
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-gold" aria-hidden="true"></div>
+        <span class="race-pos pos-win">1–2 Finish</span>
+        <div class="race-name">Saudi Arabian GP</div>
+        <div class="race-circuit">Jeddah Corniche</div>
+        <div class="race-drivers">Hamilton P1 · Leclerc P2</div>
+      </div>
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-red" aria-hidden="true"></div>
+        <span class="race-pos pos-pod">Podium</span>
+        <div class="race-name">Japanese GP</div>
+        <div class="race-circuit">Suzuka Circuit</div>
+        <div class="race-drivers">Leclerc P2 · Hamilton P6</div>
+      </div>
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-gray" aria-hidden="true"></div>
+        <span class="race-pos pos-dnf">P5 / DNF</span>
+        <div class="race-name">Miami GP</div>
+        <div class="race-circuit">Miami International</div>
+        <div class="race-drivers">Leclerc P5 · Hamilton DNF</div>
+      </div>
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-gold" aria-hidden="true"></div>
+        <span class="race-pos pos-win">Victory</span>
+        <div class="race-name">Monaco GP</div>
+        <div class="race-circuit">Circuit de Monaco</div>
+        <div class="race-drivers">Leclerc P1 · Hamilton P3</div>
+      </div>
+      <div class="race-card" role="listitem">
+        <div class="race-accent ra-gold" aria-hidden="true"></div>
+        <span class="race-pos pos-win">1–2 Finish</span>
+        <div class="race-name">Spanish GP</div>
+        <div class="race-circuit">Circuit de Barcelona</div>
+        <div class="race-drivers">Leclerc P1 · Hamilton P2</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem;padding:1.5rem;background:var(--dark);display:flex;gap:3rem;align-items:center">
+      <div><div style="font-family:var(--ff);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:4px">Constructors' Standing</div><div style="font-family:var(--ff);font-size:38px;font-weight:900;color:var(--gold)">1st</div></div>
+      <div style="width:1px;height:60px;background:rgba(245,240,232,0.1)" aria-hidden="true"></div>
+      <div><div style="font-family:var(--ff);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:4px">Points Lead</div><div style="font-family:var(--ff);font-size:38px;font-weight:900;color:var(--text)">+47</div></div>
+      <div style="width:1px;height:60px;background:rgba(245,240,232,0.1)" aria-hidden="true"></div>
+      <div><div style="font-family:var(--ff);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:4px">Race Victories</div><div style="font-family:var(--ff);font-size:38px;font-weight:900;color:var(--red)">5</div></div>
+      <div style="width:1px;height:60px;background:rgba(245,240,232,0.1)" aria-hidden="true"></div>
+      <div><div style="font-family:var(--ff);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:4px">Races Remaining</div><div style="font-family:var(--ff);font-size:38px;font-weight:900;color:var(--text)">14</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="cta" aria-labelledby="cta-title">
+  <div class="cta-inner">
+    <p style="font-family:var(--ff);font-size:13px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:1rem">Join the Tifosi</p>
+    <h2 class="cta-h2" id="cta-title">The Fire<br>Never Dies.</h2>
+    <p class="cta-sub">Become part of the most passionate community in motorsport. Follow every lap, every strategy call, every glory and heartbreak — as it happens, from Maranello to the grid.</p>
+    <div class="cta-btns">
+      <button class="btn-white" onclick="sendPrompt('How can I become a Ferrari F1 fan member and get access to exclusive content?')">
+        Become a Member
+      </button>
+      <button class="btn-ghost" onclick="sendPrompt('Tell me about the Ferrari F1 2025 schedule and upcoming races')">
+        2025 Race Calendar
+      </button>
+    </div>
+    <p class="cta-trust">Free membership · Exclusive content · Priority tickets · Forza Ferrari</p>
+  </div>
+</section>
+
+<footer role="contentinfo">
+  <div class="footer-logo">Scuderia <span>Ferrari</span> HP</div>
+  <ul class="footer-links" aria-label="Footer navigation">
+    <li><a href="#">Team</a></li>
+    <li><a href="#">Cars</a></li>
+    <li><a href="#">Drivers</a></li>
+    <li><a href="#">News</a></li>
+    <li><a href="#">Shop</a></li>
+    <li><a href="#">Careers</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Scuderia Ferrari HP. Maranello, Italy.</div>
+</footer>
+
+<script>
+function setActive(el, panelId, year, title, body) {
+  document.querySelectorAll('.tl-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-year').textContent = year;
+  document.getElementById('panel-title').textContent = title;
+  document.getElementById('panel-body').textContent = body;
+}
+</script>
